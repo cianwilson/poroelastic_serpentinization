@@ -7,7 +7,7 @@
     <mesh name="Mesh">
       <source name="File">
         <file>
-          <string_value lines="1" type="filename">fracture_mesh.xml</string_value>
+          <string_value type="filename" lines="1">fracture_mesh</string_value>
         </file>
         <cell>
           <string_value lines="1">triangle</string_value>
@@ -79,7 +79,7 @@
   </timestepping>
   <global_parameters>
     <ufl>
-      <string_value lines="20" type="code" language="python"># Cell properties
+      <string_value type="code" language="python3" lines="20"># Cell properties
 n  = FacetNormal(us_e.cell())
 
 # Permeability
@@ -128,14 +128,14 @@ sigma_eff = 2.*G*epsilond + Ke*tr(epsilon)*Identity(2)</string_value>
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <initial_condition type="initial_condition" name="WholeMesh">
+          <initial_condition name="WholeMesh" type="initial_condition">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr phicrack_ptr, phicrust_ptr, lcrack_ptr, wcrack_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr phicrack_ptr, phicrust_ptr, lcrack_ptr, wcrack_ptr;
 double phi_crack, phi_crust, l_crack, w_crack;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">phicrack_ptr = system()-&gt;fetch_coeff("phi_crack")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">phicrack_ptr = system()-&gt;fetch_coeff("phi_crack")-&gt;genericfunction_ptr(time());
 phicrust_ptr = system()-&gt;fetch_coeff("phi_crust")-&gt;genericfunction_ptr(time());
 lcrack_ptr   = system()-&gt;fetch_coeff("lcrack")-&gt;genericfunction_ptr(time());
 wcrack_ptr   = system()-&gt;fetch_coeff("wcrack")-&gt;genericfunction_ptr(time());
@@ -146,7 +146,7 @@ l_crack   = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(lcrack_ptr
 w_crack   = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(wcrack_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">double z = x[1];
+                <string_value type="code" language="cpp" lines="20">double z = x[1];
 double z_taper = 0.5*(1. + std::tanh((z + l_crack)/w_crack));
 
 // Width taper as a Gaussian of width w_crack
@@ -177,21 +177,21 @@ values[0] = phi_init;</string_value>
               <integer_value rank="0">1</integer_value>
             </degree>
           </element>
-          <initial_condition type="initial_condition" name="WholeMesh">
+          <initial_condition name="WholeMesh" type="initial_condition">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr psurface_ptr, Gstar_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr psurface_ptr, Gstar_ptr;
 double psurface, Gstar;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">psurface_ptr = system()-&gt;fetch_coeff("SurfacePressure")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">psurface_ptr = system()-&gt;fetch_coeff("SurfacePressure")-&gt;genericfunction_ptr(time());
 Gstar_ptr = system()-&gt;fetch_coeff("Elastogravity")-&gt;genericfunction_ptr(time());
 
 psurface = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(psurface_ptr));
 Gstar = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Gstar_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">// hydrostatic pressure initial condition∂ 
+                <string_value type="code" language="cpp" lines="20">// hydrostatic pressure initial condition∂ 
 double p_init = psurface - Gstar*x[1];
 values[0] = p_init;</string_value>
               </eval>
@@ -199,22 +199,22 @@ values[0] = p_init;</string_value>
           </initial_condition>
           <boundary_condition name="Top">
             <boundary_ids>
-              <integer_value shape="1" rank="1">4</integer_value>
+              <integer_value rank="1" shape="1">4</integer_value>
             </boundary_ids>
             <sub_components name="All">
-              <type type="boundary_condition" name="Dirichlet">
+              <type name="Dirichlet" type="boundary_condition">
                 <cpp rank="0">
                   <members>
-                    <string_value lines="20" type="code" language="cpp">GenericFunction_ptr psurface_ptr;
+                    <string_value type="code" language="cpp" lines="20">GenericFunction_ptr psurface_ptr;
 double psurface;</string_value>
                   </members>
                   <initialization>
-                    <string_value lines="20" type="code" language="cpp">psurface_ptr = system()-&gt;fetch_coeff("SurfacePressure")-&gt;genericfunction_ptr(time());
+                    <string_value type="code" language="cpp" lines="20">psurface_ptr = system()-&gt;fetch_coeff("SurfacePressure")-&gt;genericfunction_ptr(time());
 
 psurface = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(psurface_ptr));</string_value>
                   </initialization>
                   <eval>
-                    <string_value lines="20" type="code" language="cpp">values[0] = psurface;</string_value>
+                    <string_value type="code" language="cpp" lines="20">values[0] = psurface;</string_value>
                   </eval>
                 </cpp>
               </type>
@@ -240,14 +240,14 @@ psurface = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(psurface_pt
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <initial_condition type="initial_condition" name="WholeMesh">
+          <initial_condition name="WholeMesh" type="initial_condition">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr phicrack_ptr, phicrust_ptr, lcrack_ptr, wcrack_ptr, phi0_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr phicrack_ptr, phicrust_ptr, lcrack_ptr, wcrack_ptr, phi0_ptr;
 double phi_crack, phi_crust, l_crack, w_crack, phi0;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">phicrack_ptr = system()-&gt;fetch_coeff("phi_crack")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">phicrack_ptr = system()-&gt;fetch_coeff("phi_crack")-&gt;genericfunction_ptr(time());
 phicrust_ptr = system()-&gt;fetch_coeff("phi_crust")-&gt;genericfunction_ptr(time());
 lcrack_ptr   = system()-&gt;fetch_coeff("lcrack")-&gt;genericfunction_ptr(time());
 wcrack_ptr   = system()-&gt;fetch_coeff("wcrack")-&gt;genericfunction_ptr(time());
@@ -260,7 +260,7 @@ w_crack   = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(wcrack_ptr
 phi0      = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(phi0_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">double z = x[1];
+                <string_value type="code" language="cpp" lines="20">double z = x[1];
 double z_taper = 0.5*(1. + std::tanh((z + l_crack)/w_crack));
 
 // Width taper as a Gaussian of width w_crack
@@ -292,14 +292,14 @@ values[0] = phiA_init;</string_value>
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <initial_condition type="initial_condition" name="WholeMesh">
+          <initial_condition name="WholeMesh" type="initial_condition">
             <cpp rank="1">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr Gstar_ptr, Ke_ptr, rhobar_ptr, rhof_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr Gstar_ptr, Ke_ptr, rhobar_ptr, rhof_ptr;
 double Gstar, Ke, G, rho_bar, rho_f;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">Gstar_ptr  = system()-&gt;fetch_coeff("Elastogravity")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">Gstar_ptr  = system()-&gt;fetch_coeff("Elastogravity")-&gt;genericfunction_ptr(time());
 Ke_ptr     = system()-&gt;fetch_coeff("BulkModulus")-&gt;genericfunction_ptr(time());
 rhobar_ptr = system()-&gt;fetch_coeff("rho_bar")-&gt;genericfunction_ptr(time());
 rhof_ptr   = system()-&gt;fetch_coeff("rho_f")-&gt;genericfunction_ptr(time());
@@ -311,7 +311,7 @@ rho_bar = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(rhobar_ptr))
 rho_f   = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(rhof_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">// Equilibrium state solution for displacement
+                <string_value type="code" language="cpp" lines="20">// Equilibrium state solution for displacement
 double lamb  = Ke - 2.*G/3.;
 double beta  = lamb/(2.*(lamb + G));
 double alpha = Gstar*(rho_bar/rho_f - 1.);
@@ -323,13 +323,13 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
           </initial_condition>
           <boundary_condition name="Left">
             <boundary_ids>
-              <integer_value shape="1" rank="1">1</integer_value>
+              <integer_value rank="1" shape="1">1</integer_value>
             </boundary_ids>
             <sub_components name="x">
               <components>
-                <integer_value shape="1" rank="1">0</integer_value>
+                <integer_value rank="1" shape="1">0</integer_value>
               </components>
-              <type type="boundary_condition" name="Dirichlet">
+              <type name="Dirichlet" type="boundary_condition">
                 <constant>
                   <real_value rank="0">0</real_value>
                 </constant>
@@ -338,13 +338,13 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
           </boundary_condition>
           <boundary_condition name="Right">
             <boundary_ids>
-              <integer_value shape="1" rank="1">2</integer_value>
+              <integer_value rank="1" shape="1">2</integer_value>
             </boundary_ids>
             <sub_components name="x">
               <components>
-                <integer_value shape="1" rank="1">0</integer_value>
+                <integer_value rank="1" shape="1">0</integer_value>
               </components>
-              <type type="boundary_condition" name="Dirichlet">
+              <type name="Dirichlet" type="boundary_condition">
                 <constant>
                   <real_value rank="0">0</real_value>
                 </constant>
@@ -353,13 +353,13 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
           </boundary_condition>
           <boundary_condition name="Base">
             <boundary_ids>
-              <integer_value shape="1" rank="1">3</integer_value>
+              <integer_value rank="1" shape="1">3</integer_value>
             </boundary_ids>
             <sub_components name="y">
               <components>
-                <integer_value shape="1" rank="1">1</integer_value>
+                <integer_value rank="1" shape="1">1</integer_value>
               </components>
-              <type type="boundary_condition" name="Dirichlet">
+              <type name="Dirichlet" type="boundary_condition">
                 <constant>
                   <real_value rank="0">0</real_value>
                 </constant>
@@ -378,7 +378,7 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">-0.548510614336393</real_value>
             </constant>
@@ -393,7 +393,7 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">-0.01</real_value>
             </constant>
@@ -408,7 +408,7 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">-0.0800608142350356</real_value>
             </constant>
@@ -423,7 +423,7 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.001</real_value>
             </constant>
@@ -441,7 +441,7 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1</real_value>
             </constant>
@@ -465,19 +465,19 @@ values[1] = G*alpha*(1. - beta - beta*beta/(1. - beta))*(x[1]*x[1] - 1.);</strin
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr Ke_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr Ke_ptr;
 double Ke;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">Ke_ptr = system()-&gt;fetch_coeff("BulkModulus")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">Ke_ptr = system()-&gt;fetch_coeff("BulkModulus")-&gt;genericfunction_ptr(time());
 
 Ke = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Ke_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">values[0] = 0.5*Ke;</string_value>
+                <string_value type="code" language="cpp" lines="20">values[0] = 0.5*Ke;</string_value>
               </eval>
             </cpp>
           </value>
@@ -502,14 +502,14 @@ Ke = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Ke_ptr));</string
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr R_ptr, w_ptr, phi0_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr R_ptr, w_ptr, phi0_ptr;
 double R, w, phi0;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">R_ptr = system()-&gt;fetch_coeff("R")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">R_ptr = system()-&gt;fetch_coeff("R")-&gt;genericfunction_ptr(time());
 w_ptr = system()-&gt;fetch_coeff("w")-&gt;genericfunction_ptr(time());
 phi0_ptr = system()-&gt;fetch_coeff("phi0")-&gt;genericfunction_ptr(time());
 
@@ -518,7 +518,7 @@ w = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(w_ptr));
 phi0 = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(phi0_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">double K_phi = w*w*phi0;
+                <string_value type="code" language="cpp" lines="20">double K_phi = w*w*phi0;
 double Da = R*(1.e4)*0.84*(8.9e-4)/(phi0*3300.*K_phi*(1.e11));
 values[0] = Da;</string_value>
               </eval>
@@ -537,7 +537,7 @@ values[0] = Da;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.01</real_value>
             </constant>
@@ -561,14 +561,14 @@ values[0] = Da;</string_value>
               <integer_value rank="0">2</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr Kcrack_ptr, lcrack_ptr, wcrack_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr Kcrack_ptr, lcrack_ptr, wcrack_ptr;
 double K_crack, l_crack, w_crack;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">Kcrack_ptr = system()-&gt;fetch_coeff("Kcrack")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">Kcrack_ptr = system()-&gt;fetch_coeff("Kcrack")-&gt;genericfunction_ptr(time());
 lcrack_ptr = system()-&gt;fetch_coeff("lcrack")-&gt;genericfunction_ptr(time());
 wcrack_ptr = system()-&gt;fetch_coeff("wcrack")-&gt;genericfunction_ptr(time());
 
@@ -577,7 +577,7 @@ l_crack = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(lcrack_ptr))
 w_crack = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(wcrack_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">double z = x[1];
+                <string_value type="code" language="cpp" lines="20">double z = x[1];
 double z_taper = 0.5*(1. + std::tanh((z + l_crack)/w_crack));
 
 // Width taper as a Gaussian of width w_crack
@@ -601,7 +601,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1.</real_value>
             </constant>
@@ -617,7 +617,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.5</real_value>
             </constant>
@@ -633,7 +633,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.005</real_value>
             </constant>
@@ -649,7 +649,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.01</real_value>
             </constant>
@@ -665,7 +665,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1.</real_value>
             </constant>
@@ -682,7 +682,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">9.81e-5</real_value>
             </constant>
@@ -698,9 +698,9 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Vector" rank="1">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant name="dim">
-              <real_value shape="2" dim1="dim" rank="1">0 -1</real_value>
+              <real_value rank="1" dim1="dim" shape="2">0 -1</real_value>
             </constant>
           </value>
         </rank>
@@ -714,7 +714,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">90000.</real_value>
             </constant>
@@ -730,7 +730,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">3300</real_value>
             </constant>
@@ -746,7 +746,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1000</real_value>
             </constant>
@@ -762,7 +762,7 @@ values[0] = K_0;</string_value>
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">0.005</real_value>
               <comment>Maximum timestep</comment>
@@ -787,18 +787,18 @@ values[0] = K_0;</string_value>
               <integer_value rank="0">0</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr max_dt_ptr;
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr max_dt_ptr;
 double dt_max;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">max_dt_ptr = system()-&gt;fetch_coeff("max_dt")-&gt;genericfunction_ptr(time());
+                <string_value type="code" language="cpp" lines="20">max_dt_ptr = system()-&gt;fetch_coeff("max_dt")-&gt;genericfunction_ptr(time());
 dt_max = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(max_dt_ptr));</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">values[0] = bucket()-&gt;timestep()/dt_max;</string_value>
+                <string_value type="code" language="cpp" lines="20">values[0] = bucket()-&gt;timestep()/dt_max;</string_value>
               </eval>
             </cpp>
           </value>
@@ -812,7 +812,7 @@ dt_max = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(max_dt_ptr));
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1.e-6</real_value>
             </constant>
@@ -828,7 +828,7 @@ dt_max = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(max_dt_ptr));
       </ufl_symbol>
       <type name="Constant">
         <rank name="Scalar" rank="0">
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">1.e-3</real_value>
             </constant>
@@ -841,7 +841,7 @@ dt_max = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(max_dt_ptr));
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python"># Residuals: porosity, compaction pressure and phase_A
+          <string_value type="code" language="python3" lines="20"># Residuals: porosity, compaction pressure and phase_A
 F_f   = f_t*(f_i - f_n - omp*div(u_i - u_n) - dt*R_phi*Da*S)*dx
 F_fA  = fA_t*(fA_i - fA_n + phi0*fA_i*div(u_i - u_n) - dt*R_phi_A*Da*S)*dx
 F_p   = p_t*div(u_i - u_n)*dx + beta*f_i*p_t*(p_i - p_n)*dx + \
@@ -860,7 +860,7 @@ F = F_f + F_fA + F_p + F_u</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,us_i,us_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(F,us_i,us_a)</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -930,9 +930,7 @@ F = F_f + F_fA + F_p + F_u</string_value>
           </element>
         </rank>
       </type>
-      <diagnostics>
-        <include_in_visualization/>
-      </diagnostics>
+      <diagnostics/>
     </field>
     <coefficient name="lambda1">
       <ufl_symbol name="global">
@@ -948,16 +946,16 @@ F = F_f + F_fA + F_p + F_u</string_value>
               <integer_value rank="0">1</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr sigma_eff_ptr;</string_value>
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr sigma_eff_ptr;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
+                <string_value type="code" language="cpp" lines="20">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">dolfin::Array&lt;double&gt; tmpvalues(4);
+                <string_value type="code" language="cpp" lines="20">dolfin::Array&lt;double&gt; tmpvalues(4);
 
 sigma_eff_ptr-&gt;eval(tmpvalues, x);
 double sigma_xx = tmpvalues[0];
@@ -1000,16 +998,16 @@ values[0] = lambda_1;</string_value>
               <integer_value rank="0">1</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="1">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr sigma_eff_ptr;</string_value>
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr sigma_eff_ptr;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
+                <string_value type="code" language="cpp" lines="20">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">dolfin::Array&lt;double&gt; tmpvalues(4);
+                <string_value type="code" language="cpp" lines="20">dolfin::Array&lt;double&gt; tmpvalues(4);
 
 sigma_eff_ptr-&gt;eval(tmpvalues, x);
 double sigma_xx = tmpvalues[0];
@@ -1048,9 +1046,7 @@ else
           </value>
         </rank>
       </type>
-      <diagnostics>
-        <include_in_visualization/>
-      </diagnostics>
+      <diagnostics/>
       <comment>first eigenvector \lambda1 || x_1||</comment>
     </coefficient>
     <coefficient name="lambda2">
@@ -1067,16 +1063,16 @@ else
               <integer_value rank="0">1</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="0">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr sigma_eff_ptr;</string_value>
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr sigma_eff_ptr;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
+                <string_value type="code" language="cpp" lines="20">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">dolfin::Array&lt;double&gt; tmpvalues(4);
+                <string_value type="code" language="cpp" lines="20">dolfin::Array&lt;double&gt; tmpvalues(4);
 
 sigma_eff_ptr-&gt;eval(tmpvalues, x);
 double sigma_xx = tmpvalues[0];
@@ -1119,16 +1115,16 @@ values[0] = lambda_2;</string_value>
               <integer_value rank="0">1</integer_value>
             </degree>
           </element>
-          <value type="value" name="WholeMesh">
+          <value name="WholeMesh" type="value">
             <cpp rank="1">
               <members>
-                <string_value lines="20" type="code" language="cpp">GenericFunction_ptr sigma_eff_ptr;</string_value>
+                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr sigma_eff_ptr;</string_value>
               </members>
               <initialization>
-                <string_value lines="20" type="code" language="cpp">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
+                <string_value type="code" language="cpp" lines="20">sigma_eff_ptr = system()-&gt;fetch_field("Sigma_eff")-&gt;genericfunction_ptr(time());</string_value>
               </initialization>
               <eval>
-                <string_value lines="20" type="code" language="cpp">dolfin::Array&lt;double&gt; tmpvalues(4);
+                <string_value type="code" language="cpp" lines="20">dolfin::Array&lt;double&gt; tmpvalues(4);
 
 sigma_eff_ptr-&gt;eval(tmpvalues, x);
 double sigma_xx = tmpvalues[0];
@@ -1167,21 +1163,19 @@ else
           </value>
         </rank>
       </type>
-      <diagnostics>
-        <include_in_visualization/>
-      </diagnostics>
+      <diagnostics/>
       <comment>first eigenvector \lambda1 || x_1||</comment>
     </coefficient>
     <nonlinear_solver name="Solve">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = inner(sigma_effp_t,(sigma_effp_i - sigma_eff))*dx</string_value>
+          <string_value type="code" language="python3" lines="20">F = inner(sigma_effp_t,(sigma_effp_i - sigma_eff))*dx</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,usigma_eff_i,usigma_eff_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(F,usigma_eff_i,usigma_eff_a)</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -1252,13 +1246,13 @@ else
     <nonlinear_solver name="Solve">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = fB_t*(fB_i - phiB)*dx</string_value>
+          <string_value type="code" language="python3" lines="20">F = fB_t*(fB_i - phiB)*dx</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,userp_i,userp_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(F,userp_i,userp_a)</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -1313,20 +1307,18 @@ else
           </element>
         </rank>
       </type>
-      <diagnostics>
-        <include_in_visualization/>
-      </diagnostics>
+      <diagnostics/>
     </field>
     <nonlinear_solver name="Solve">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = inner(q_t, q_i + flux)*dx</string_value>
+          <string_value type="code" language="python3" lines="20">F = inner(q_t, q_i + flux)*dx</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,uq_i,uq_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(F,uq_i,uq_a)</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -1388,13 +1380,13 @@ else
     <nonlinear_solver name="Solve">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = inner(divu_t, divu_i - div(u_i))*dx</string_value>
+          <string_value type="code" language="python3" lines="20">F = inner(divu_t, divu_i - div(u_i))*dx</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,udivu_i,udivu_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(F,udivu_i,udivu_a)</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
